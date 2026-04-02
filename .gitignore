@@ -1,0 +1,19 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+orders_dataset.csv
+order_items_dataset.csv
+order_reviews_dataset.csv
+customers_dataset.csv
+geolocation_dataset.csv
+products_dataset.csv
+sellers_dataset.csv
+order_payments_dataset.csv

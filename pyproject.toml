@@ -1,0 +1,17 @@
+[project]
+name = "cientifico-datos-c-digitales-pt-proteccion"
+version = "0.1.0"
+description = "prueba tecnica para quipo Canales Digitales - Cientifico De Datos Para Soluciones Con IA - proteccion"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "ipykernel>=7.2.0",
+    "pandas>=3.0.1",
+    "pyarrow>=23.0.1",
+    "seaborn>=0.13.2",
+    "langchain>=1.2.13",
+    "langchain-ollama>=1.0.1",
+    "folium>=0.20.0",
+    "scikit-learn>=1.8.0",
+    "wordcloud>=1.9.6",
+]

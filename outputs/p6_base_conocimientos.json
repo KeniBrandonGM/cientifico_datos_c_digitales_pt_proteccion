@@ -1,0 +1,68 @@
+{
+  "version": "1.0",
+  "descripcion": "Base de conocimientos simulada",
+  "total_productos": 3,
+  "productos": [
+    {
+      "id": "PROD-001",
+      "categoria": "health_beauty",
+      "nombre": "Kit de Belleza y Cuidado Personal Premium",
+      "descripcion": "Descubre nuestra línea premium de productos de belleza y cuidado personal. Desde skincare hidratante hasta maquillaje de larga duración, cada artículo está seleccionado para realzar tu rutina diaria de bienestar. Ideal para quienes buscan verse y sentirse bien sin salir de casa. ¡El autocuidado nunca fue tan accesible!",
+      "precio_promedio_real": 130.28,
+      "rango_precios": {
+        "minimo": 1.2,
+        "maximo": 3124.0
+      },
+      "unidades_vendidas": 9465,
+      "destacado": true,
+      "tags": [
+        "belleza",
+        "skincare",
+        "cuidado personal",
+        "bienestar",
+        "salud"
+      ]
+    },
+    {
+      "id": "PROD-002",
+      "categoria": "bed_bath_table",
+      "nombre": "Colección Hogar: Cama, Baño y Mesa",
+      "descripcion": "Transforma cada rincón de tu hogar con nuestra colección más vendida. Sábanas de algodón suave, toallas ultra absorbentes y manteles elegantes que combinan confort y estilo. Productos pensados para hacer de tu casa un refugio acogedor. La categoría #1 en volumen de ventas por una razón: calidad que se siente desde el primer uso.",
+      "precio_promedio_real": 93.44,
+      "rango_precios": {
+        "minimo": 6.99,
+        "maximo": 1999.98
+      },
+      "unidades_vendidas": 10953,
+      "destacado": true,
+      "tags": [
+        "hogar",
+        "cama",
+        "baño",
+        "mesa",
+        "decoración",
+        "confort"
+      ]
+    },
+    {
+      "id": "PROD-003",
+      "categoria": "watches_gifts",
+      "nombre": "Relojes y Regalos Exclusivos",
+      "descripcion": "Encuentra el regalo perfecto en nuestra selección curada de relojes y artículos de regalo. Desde relojes clásicos hasta accesorios modernos, cada pieza está diseñada para impresionar. Con el ticket promedio más alto de nuestro catálogo, estos productos representan sofisticación y buen gusto. Perfectos para ocasiones especiales o para darte un capricho que perdure.",
+      "precio_promedio_real": 199.04,
+      "rango_precios": {
+        "minimo": 8.99,
+        "maximo": 3999.9
+      },
+      "unidades_vendidas": 5859,
+      "destacado": true,
+      "tags": [
+        "relojes",
+        "regalos",
+        "accesorios",
+        "lujo",
+        "ocasiones especiales"
+      ]
+    }
+  ]
+}

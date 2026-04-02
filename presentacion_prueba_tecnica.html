@@ -1,0 +1,1767 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentación Ejecutiva - Prueba Técnica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+/* 1. SETUP & RESET */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0f172a; /* Deep Slate Background */
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#presentation-area {
+  position: relative;
+  width: 1280px;
+  height: 720px;
+  transform-origin: center center;
+}
+
+/* Base Slide Container: Fixed Dimensions 1280x720 */
+.slide-container {
+  align-items: flex-start;
+  background-color: #1e293b; /* Slate 800 */
+  border-radius: 12px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  font-family: 'Outfit', sans-serif;
+  height: 720px;
+  justify-content: flex-start;
+  overflow: hidden;
+  padding: 50px 60px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1280px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.slide-container.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 10;
+}
+
+/* Background gradient accent */
+.slide-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(90deg, #14b8a6 0%, #3b82f6 100%);
+  z-index: 10;
+}
+
+.slide-container > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 2. TYPOGRAPHY (Outfit for body, Space Grotesk for Headings) */
+.slide-container h1,
+.slide-container h2,
+.slide-container h3,
+.slide-container h4 {
+  color: #f8fafc;
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif;
+  margin: 0;
+}
+
+.slide-container h1 {
+  font-size: 64px;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+
+/* Slide Titles consistently placed at the top-left */
+.slide-container .slide-title {
+  font-size: 42px;
+  font-weight: 600;
+  margin-bottom: 40px;
+  text-align: left;
+  width: 100%;
+  color: #f8fafc;
+}
+
+.slide-container h3 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #e2e8f0;
+}
+
+.slide-container p,
+.slide-container li,
+.slide-container .subtitle,
+.slide-container td,
+.slide-container th,
+.slide-container .bar .label,
+.slide-container .chart-summary {
+  color: #cbd5e1;
+  font-family: 'Outfit', sans-serif;
+  font-size: 19px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.slide-container p { margin-bottom: 15px; }
+
+.slide-container .subtitle {
+  color: #94a3b8;
+  font-size: 24px;
+  font-weight: 400;
+  margin-top: 20px;
+}
+
+/* Content wrapper */
+.content-area {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
+  height: calc(100% - 82px); /* 720 - padding - title */
+}
+
+/* 3. LAYOUT DEFINITIONS */
+/* Title Layout */
+.title-layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  width: 70%;
+  padding-left: 20px;
+}
+
+/* Section Layout */
+.section-title-layout {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+.section-title-layout h2 {
+  font-size: 56px;
+  margin-bottom: 20px;
+}
+
+.section-title-layout hr {
+  background: linear-gradient(90deg, #14b8a6, #3b82f6);
+  border: none;
+  height: 6px;
+  margin: 30px auto;
+  width: 120px;
+  border-radius: 3px;
+}
+
+/* Two Column Layout */
+.two-column {
+  display: flex;
+  gap: 50px;
+  width: 100%;
+  height: 100%;
+}
+.two-column > div { flex: 1; }
+
+.image-wrapper {
+  border-radius: 12px;
+  height: 400px;
+  width: 100%;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.image-wrapper img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* Tiled Content (Cards) */
+.tiled-content {
+  display: flex;
+  gap: 30px;
+  width: 100%;
+  height: stretch;
+}
+
+.tile {
+  background-color: #0f172a;
+  border-radius: 12px;
+  border: 1px solid #334155;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 25px;
+}
+
+.tile .icon {
+  color: #14b8a6;
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+/* 2x2 Grid Layout */
+.grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 25px;
+  width: 100%;
+  height: stretch;
+}
+
+.grid-2x2 .tile {
+  padding: 20px 25px;
+  justify-content: center;
+}
+
+/* Bleed Image Right */
+.slide-container.bleed-image-layout {
+  display: grid;
+  gap: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0;
+}
+
+.slide-container.bleed-image-layout > .content-container {
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+.slide-container.bleed-image-layout > .image-container {
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+
+.slide-container.bleed-image-layout img.bleed-image-side {
+  display: block;
+  height: 720px;
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+}
+
+/* Bullet Lists */
+.bullet-list {
+  width: 100%;
+}
+
+.bullet-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.bullet-list li {
+  margin-bottom: 25px;
+  padding-left: 45px;
+  position: relative;
+}
+
+.bullet-list i {
+  color: #14b8a6;
+  font-size: 24px;
+  left: 0;
+  position: absolute;
+  top: 3px;
+}
+
+.bullet-list li strong {
+  color: #f8fafc;
+  font-family: 'Space Grotesk', sans-serif;
+  display: block;
+  margin-bottom: 5px;
+  font-size: 21px;
+}
+
+/* Highlighted Numbers */
+.highlight-numbers-layout {
+  align-items: center;
+}
+
+.highlight-numbers-layout > div:first-child {
+  flex: 0 0 45%;
+  text-align: left;
+}
+
+.highlight-numbers-layout .number {
+  color: #14b8a6;
+  font-size: 120px;
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.highlight-numbers-layout .number-label {
+  font-size: 28px;
+  color: #f8fafc;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Custom Stacked Bar Chart */
+.stacked-bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.stacked-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.stacked-bar .label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.stacked-bar .label-text {
+  color: #e2e8f0;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: 'Space Grotesk', sans-serif;
+  text-transform: capitalize;
+}
+
+.stacked-bar .label-value {
+  color: #94a3b8;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.stacked-bar .bar-inner {
+  background-color: #0f172a;
+  border-radius: 6px;
+  height: 24px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.stacked-bar .bar-fill {
+  height: 100%;
+  border-radius: 6px;
+}
+
+/* Doughnut Chart */
+.doughnut-chart-container {
+  align-items: center;
+  display: flex;
+  gap: 80px;
+  justify-content: center;
+  width: 100%;
+  padding-top: 10px;
+}
+
+.doughnut-chart {
+  border-radius: 50%;
+  height: 380px;
+  width: 380px;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.doughnut-chart::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 220px;
+  height: 220px;
+  background-color: #1e293b;
+  border-radius: 50%;
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.legend li {
+  align-items: center;
+  color: #cbd5e1;
+  display: flex;
+  font-size: 18px;
+}
+
+.legend .color-box {
+  border-radius: 4px;
+  height: 20px;
+  margin-right: 15px;
+  width: 20px;
+}
+
+/* Mini Table */
+.mini-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.mini-table th,
+.mini-table td {
+  padding: 8px 5px;
+  text-align: left;
+  font-size: 16px;
+  color: #e2e8f0;
+  border-bottom: 1px solid #334155;
+}
+
+.mini-table th {
+  color: #94a3b8;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.mini-table tr:last-child td { border-bottom: none; }
+
+.mini-table td.highlight {
+  color: #f43f5e;
+  font-weight: 700;
+  text-align: right;
+}
+
+/* Executive Big Table */
+.exec-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #0f172a;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+.exec-table th {
+    background: #0b1120;
+    color: #94a3b8;
+    text-transform: uppercase;
+    padding: 20px;
+    font-size: 16px;
+    font-family: 'Space Grotesk';
+    border-bottom: 2px solid #334155;
+}
+.exec-table td {
+    padding: 20px;
+    border-bottom: 1px solid #334155;
+    font-size: 18px;
+}
+.exec-table tr:last-child td { border-bottom: none; }
+.exec-table .row-winner {
+    background: rgba(20, 184, 166, 0.1);
+}
+.exec-table .row-winner td {
+    color: #14b8a6;
+    font-weight: bold;
+}
+
+/* Alert Box */
+.alert-box {
+  background-color: rgba(244, 63, 94, 0.1);
+  border: 2px solid #f43f5e;
+  border-radius: 12px;
+  padding: 25px;
+  margin-top: 20px;
+}
+
+.alert-box h4 {
+  color: #f43f5e;
+  font-size: 24px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.alert-box p {
+  color: #f8fafc;
+  font-size: 19px;
+  margin: 0;
+}
+
+/* Tree / Flowchart Box */
+.flow-box {
+  background: rgba(59, 130, 246, 0.1);
+  border-left: 4px solid #3b82f6;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+.flow-box h4 {
+  color: #60a5fa;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+.flow-box p { font-size: 17px; }
+
+/* Custom Flowchart Nodes */
+.tech-flow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    margin-top: 30px;
+}
+.tech-node {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid #14b8a6;
+    border-radius: 8px;
+    padding: 25px 20px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(20, 184, 166, 0.2);
+    flex: 1;
+    position: relative;
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.tech-node h4 {
+    color: #14b8a6;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.tech-node p {
+    font-size: 15px;
+    color: #cbd5e1;
+    line-height: 1.4;
+}
+.tech-arrow {
+    color: #3b82f6;
+    font-size: 28px;
+}
+.tech-node.highlight {
+    border-color: #3b82f6;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+}
+.tech-node.highlight h4 {
+    color: #3b82f6;
+}
+
+/* Code Snippet */
+.code-block {
+    background: #0b1120;
+    padding: 20px;
+    border-radius: 8px;
+    font-family: 'Courier New', Courier, monospace;
+    color: #a78bfa;
+    font-size: 15px;
+    white-space: pre-wrap;
+    border: 1px solid #334155;
+    overflow-y: auto;
+    height: 100%;
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 #0f172a;
+}
+.code-block::-webkit-scrollbar {
+  width: 8px;
+}
+.code-block::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+.code-block::-webkit-scrollbar-thumb {
+  background-color: #3b82f6;
+  border-radius: 10px;
+}
+
+/* P7 Specific Architecture Diagram */
+.agent-arch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.arch-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    justify-content: center;
+}
+.arch-box {
+    background: #1e293b;
+    border: 2px solid #64748b;
+    padding: 15px 20px;
+    border-radius: 8px;
+    text-align: center;
+    min-width: 250px;
+}
+.arch-box.highlight {
+    border-color: #a855f7;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+}
+.arch-arrow {
+    color: #94a3b8;
+    font-size: 24px;
+    margin: 15px 0;
+}
+
+/* Utilities */
+.bg-dark-image {
+  background-size: cover;
+  background-position: center;
+}
+.bg-dark-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.85);
+  z-index: 0;
+}
+.bg-dark-image .title-layout {
+  z-index: 2;
+}
+
+.column-header {
+  background: #0f172a;
+  padding: 15px 20px;
+  border-radius: 8px;
+  border-left: 4px solid #14b8a6;
+  margin-bottom: 20px;
+}
+.column-header.blue-accent {
+  border-left-color: #3b82f6;
+}
+.column-header.purple-accent {
+  border-left-color: #a855f7;
+}
+.column-header h4 {
+  font-size: 24px;
+}
+
+/* Controls Styling */
+.controls {
+  position: fixed;
+  bottom: 30px;
+  right: 40px;
+  left: auto;
+  transform: none;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 10px 20px;
+  border-radius: 50px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  transition: background 0.3s;
+}
+.controls:hover {
+  background: rgba(15, 23, 42, 0.9);
+}
+.controls button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: #f8fafc;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.controls button:hover {
+  color: #14b8a6;
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
+}
+.controls button:active {
+  transform: scale(0.95);
+}
+.controls span {
+  color: #cbd5e1;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  min-width: 60px;
+  text-align: center;
+  user-select: none;
+}
+    </style>
+</head>
+<body>
+
+<div id="presentation-area">
+
+<!-- Slide 1: Title Slide -->
+<div class="slide-container active bg-dark-image" id="slide1" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1920&q=80');">
+    <div class="title-layout">
+        <h1 style="color: #14b8a6; font-size: 32px; margin-bottom: 20px; font-weight: 500; letter-spacing: 2px;">PROTECCIÓN - CANALES DIGITALES</h1>
+        <h1 style="font-size: 72px;">Científico de Datos para Soluciones con IA</h1>
+        <p class="subtitle" style="color: #f8fafc; font-size: 28px;">Presentación Ejecutiva de Resultados - Prueba Técnica</p>
+    </div>
+</div>
+
+<!-- Slide 2: Section 1 -->
+<div class="slide-container" id="slide2">
+    <div class="section-title-layout">
+        <hr>
+        <h2>1. Análisis de Catálogo y Ventas</h2>
+        <p class="subtitle">Identificación de Top Ventas y Rentabilidad</p>
+    </div>
+</div>
+
+<!-- Slide 3 -->
+<div class="slide-container" id="slide3">
+    <h2 class="slide-title">Metodología y Supuestos de Análisis</h2>
+    <div class="content-area">
+        <div class="tiled-content">
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-box-check"></i><i class="fa-solid fa-truck-fast"></i></div>
+                <h3 style="font-size: 24px;">1. Filtro Financiero</h3>
+                <p><strong>Solo estado "delivered".</strong> Bajo una perspectiva financiera estricta, únicamente los pedidos entregados (96.478) representan ingresos reales. Se descartaron pedidos cancelados o en tránsito.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-language"></i></div>
+                <h3 style="font-size: 24px;">2. Manejo de Nulos (Fallback)</h3>
+                <p>Se consolidó el catálogo de 110.197 ítems vendidos aplicando una jerarquía: Traducción EN > Nombre PT > <strong>'unknown_category'</strong>. Esto garantizó preservar el 100% de la data en el análisis sin pérdida por metadatos faltantes.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+                <h3 style="font-size: 24px;">3. Ingresos sin Flete</h3>
+                <p>La métrica de ingresos netos se calculó exclusivamente usando el <strong>precio unitario del producto</strong>. Se excluyó el valor del flete al ser un costo logístico y no el precio real del ítem, asegurando precisión en la rentabilidad.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 4 -->
+<div class="slide-container" id="slide4">
+    <h2 class="slide-title">Top 5 Productos: Volumen vs. Ingresos Totales</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <div class="column-header">
+                    <h4>Top 5 por Volumen <span style="color:#94a3b8; font-size:16px; font-weight:400;">(Unidades)</span></h4>
+                </div>
+                <div class="stacked-bar-chart">
+                    <div class="stacked-bar">
+                        <div class="label-row"><span class="label-text">1. Bed, Bath & Table</span><span class="label-value">10,953 unds</span></div>
+                        <div class="bar-inner"><div class="bar-fill" style="width: 100%; background: linear-gradient(90deg, #14b8a6, #0d9488);"></div></div>
+                    </div>
+                    <div class="stacked-bar">
+                        <div class="label-row"><span class="label-text">2. Health & Beauty</span><span class="label-value">9,465 unds</span></div>
+                        <div class="bar-inner"><div class="bar-fill" style="width: 86.4%; background: linear-gradient(90deg, #14b8a6, #0d9488);"></div></div>
+                    </div>
+                    <div class="stacked-bar">
+                        <div class="label-row"><span class="label-text">3. Sports & Leisure</span><span class="label-value">8,431 unds</span></div>
+                        <div class="bar-inner"><div class="bar-fill" style="width: 76.9%; background: linear-gradient(90deg, #14b8a6, #0d9488);"></div></div>
+                    </div>
+                    <div class="stacked-bar">
+                        <div class="label-row"><span class="label-text">4. Furniture Decor</span><span class="label-value">8,160 unds</span></div>
+                        <div class="bar-inner"><div class="bar-fill" style="width: 74.5%; background: linear-gradient(90deg, #14b8a6, #0d9488);"></div></div>
+                    </div>
+                    <div class="stacked-bar">
+                        <div class="label-row"><span class="label-text">5. Computers & Accessories</span><span class="label-value">7,644 unds</span></div>
+                        <div class="bar-inner"><div class="bar-fill" style="width: 69.7%; background: linear-gradient(90deg, #14b8a6, #0d9488);"></div></div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="column-header blue-accent">
+                    <h4>Top 5 por Ingresos <span style="color:#94a3b8; font-size:16px; font-weight:400;">(Reales Brasileños R$)</span></h4>
+                </div>
+                <div class="stacked-bar-chart">
+                    <div class="stacked-bar">
+                        <div class="label-row"><span class="label-text">1. Health & Beauty</span><span class="label-value">R$ 1.23M</span></div>
+                        <div class="bar-inner"><div class="bar-fill" style="width: 100%; background: linear-gradient(90deg, #3b82f6, #2563eb);"></div></div>
+                    </div>
+                    <div class="stacked-bar">
+                        <div class="label-row"><span class="label-text">2. Watches & Gifts</span><span class="label-value">R$ 1.16M</span></div>
+                        <div class="bar-inner"><div class="bar-fill" style="width: 94.5%; background: linear-gradient(90deg, #3b82f6, #2563eb);"></div></div>
+                    </div>
+                    <div class="stacked-bar">
+                        <div class="label-row"><span class="label-text">3. Bed, Bath & Table</span><span class="label-value">R$ 1.02M</span></div>
+                        <div class="bar-inner"><div class="bar-fill" style="width: 83.0%; background: linear-gradient(90deg, #3b82f6, #2563eb);"></div></div>
+                    </div>
+                    <div class="stacked-bar">
+                        <div class="label-row"><span class="label-text">4. Sports & Leisure</span><span class="label-value">R$ 954k</span></div>
+                        <div class="bar-inner"><div class="bar-fill" style="width: 77.4%; background: linear-gradient(90deg, #3b82f6, #2563eb);"></div></div>
+                    </div>
+                    <div class="stacked-bar">
+                        <div class="label-row"><span class="label-text">5. Computers & Acc.</span><span class="label-value">R$ 888k</span></div>
+                        <div class="bar-inner"><div class="bar-fill" style="width: 72.0%; background: linear-gradient(90deg, #3b82f6, #2563eb);"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 5 -->
+<div class="slide-container" id="slide5">
+    <h2 class="slide-title">Insights Clave del Catálogo</h2>
+    <div class="content-area">
+        <div class="tiled-content">
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-star" style="color: #fbbf24;"></i></div>
+                <h3 style="color: #fbbf24; font-size: 24px;">Categoría Estrella</h3>
+                <p><strong>Health & Beauty</strong> es el pilar central del negocio. Única categoría posicionada estratégicamente como <strong>#1 en Ingresos y #2 en Volumen</strong>. Demuestra una demanda masiva sostenida combinada con una altísima rentabilidad global.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-gem" style="color: #a855f7;"></i></div>
+                <h3 style="color: #a855f7; font-size: 24px;">Segmento Premium</h3>
+                <p><strong>Watches & Gifts</strong> genera el segundo mayor ingreso total (R$1.16M), pero <strong>no figura en el Top 5 de volumen</strong>. Indica un Ticket Promedio muy alto (R$199), posicionándola como una categoría premium clave para el margen de ganancia.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-arrows-rotate" style="color: #14b8a6;"></i></div>
+                <h3 style="color: #14b8a6; font-size: 24px;">Alta Rotación</h3>
+                <p><strong>Bed, Bath & Table</strong> es el líder absoluto en Volumen (#1 con 10,953 unds) pero cae al #3 en Ingresos. Refleja un comportamiento de producto "gancho": alta rotación de inventario con un ticket promedio moderado (R$93).</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 6: Section 2 -->
+<div class="slide-container" id="slide6">
+    <div class="section-title-layout">
+        <hr>
+        <h2>2. Análisis de Experiencia del Cliente (NLP)</h2>
+        <p class="subtitle">Identificación de Puntos de Fricción mediante Modelos de Lenguaje</p>
+    </div>
+</div>
+
+<!-- Slide 7 -->
+<div class="slide-container" id="slide7">
+    <h2 class="slide-title">Metodología NLP para Clasificación de Reseñas</h2>
+    <div class="content-area">
+        <div class="tiled-content">
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-filter" style="color: #3b82f6;"></i></div>
+                <h3 style="color: #3b82f6; font-size: 24px;">1. Filtro de Quejas</h3>
+                <p>Se procesó el <code>order_reviews_dataset</code> aislando <strong>10.890 comentarios negativos</strong> (1 o 2 estrellas) que contenían texto explícito, descartando calificaciones vacías.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-robot" style="color: #a855f7;"></i></div>
+                <h3 style="color: #a855f7; font-size: 24px;">2. Clasificación Zero-Shot</h3>
+                <p>Uso del modelo LLM local <strong>granite4:3b</strong> para estructurar el texto libre en una taxonomía de 6 categorías basada en un análisis previo de n-gramas, garantizando contexto real del negocio.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-scale-unbalanced" style="color: #f43f5e;"></i></div>
+                <h3 style="color: #f43f5e; font-size: 24px;">3. Análisis de Tasas</h3>
+                <p>Para evitar el sesgo de volumen (donde lo más vendido tiene más quejas absolutas), se calculó la <strong>tasa de insatisfacción real</strong> exigiendo un umbral mínimo de 100 reseñas.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 8 -->
+<div class="slide-container" id="slide8">
+    <h2 class="slide-title">El Mayor Dolor del Cliente: Falla Logística</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div class="chart-container">
+                <div class="stacked-bar-chart" style="margin-top: 30px;">
+                    <div class="stacked-bar">
+                        <div class="label-row"><span class="label-text" style="color: #f43f5e;"><i class="fa-solid fa-truck-fast" style="margin-right: 8px;"></i> Retrasos / No Entrega</span><span class="label-value">44.6%</span></div>
+                        <div class="bar-inner"><div class="bar-fill" style="width: 44.6%; background: #f43f5e;"></div></div>
+                    </div>
+                    <div class="stacked-bar">
+                        <div class="label-row"><span class="label-text" style="color: #fbbf24;"><i class="fa-solid fa-box-open" style="margin-right: 8px;"></i> Prod. Incorrecto/Faltante</span><span class="label-value">25.9%</span></div>
+                        <div class="bar-inner"><div class="bar-fill" style="width: 25.9%; background: #fbbf24;"></div></div>
+                    </div>
+                    <div class="stacked-bar">
+                        <div class="label-row"><span class="label-text" style="color: #3b82f6;"><i class="fa-solid fa-heart-crack" style="margin-right: 8px;"></i> Calidad del Producto</span><span class="label-value">18.0%</span></div>
+                        <div class="bar-inner"><div class="bar-fill" style="width: 18.0%; background: #3b82f6;"></div></div>
+                    </div>
+                    <div class="stacked-bar">
+                        <div class="label-row"><span class="label-text" style="color: #64748b;"><i class="fa-solid fa-ellipsis" style="margin-right: 8px;"></i> Otros</span><span class="label-value">11.5%</span></div>
+                        <div class="bar-inner"><div class="bar-fill" style="width: 11.5%; background: #64748b;"></div></div>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column; justify-content: center; padding-left: 20px;">
+                <div class="highlight-numbers-layout" style="align-items: flex-start; margin-bottom: 20px;">
+                    <div class="number" style="color: #f43f5e; font-size: 110px; margin-bottom: 0;">70.5%</div>
+                    <div class="number-label" style="font-size: 24px; color: #cbd5e1; margin-top: -10px;">de quejas asociadas a logística.</div>
+                </div>
+                <p style="font-size: 21px; line-height: 1.6; color: #94a3b8; margin-top: 15px;">
+                    El problema principal no radica en el catálogo, sino en la <strong>cadena de suministro</strong>. Casi 3 de cada 4 clientes insatisfechos experimentaron fricción directamente por retrasos o errores de envío.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 9 -->
+<div class="slide-container" id="slide9">
+    <h2 class="slide-title">Desglose de Insatisfacción por Tipo de Dolor</h2>
+    <div class="content-area">
+        <p style="font-size: 18px; margin-bottom: 20px;">Categorías con las tasas más altas de falla normalizadas (mín. 100 reseñas):</p>
+        <div class="tiled-content">
+            <div class="tile">
+                <div class="icon" style="color: #f43f5e; margin-bottom: 5px;"><i class="fa-solid fa-truck-fast"></i></div>
+                <h3 style="color: #f43f5e; font-size: 22px; margin-bottom: 10px;">Retrasos / No Entrega</h3>
+                <table class="mini-table">
+                    <tr><th>Categoría</th><th style="text-align:right;">Tasa</th></tr>
+                    <tr><td>fashion_male_clothing</td><td class="highlight">9.2%</td></tr>
+                    <tr><td>fashion_underwear_beach</td><td class="highlight">9.2%</td></tr>
+                    <tr><td>fixed_telephony</td><td class="highlight">8.8%</td></tr>
+                    <tr><td><strong>office_furniture</strong></td><td class="highlight">7.5%</td></tr>
+                    <tr><td>furniture_living_room</td><td class="highlight">7.4%</td></tr>
+                </table>
+            </div>
+            <div class="tile">
+                <div class="icon" style="color: #fbbf24; margin-bottom: 5px;"><i class="fa-solid fa-box-open"></i></div>
+                <h3 style="color: #fbbf24; font-size: 22px; margin-bottom: 10px;">Prod. Incorrecto/Faltante</h3>
+                <table class="mini-table">
+                    <tr><th>Categoría</th><th style="text-align:right;">Tasa</th></tr>
+                    <tr><td>fashion_male_clothing</td><td class="highlight" style="color: #fbbf24;">9.2%</td></tr>
+                    <tr><td><strong>office_furniture</strong></td><td class="highlight" style="color: #fbbf24;">8.4%</td></tr>
+                    <tr><td>costruction_tools_garden</td><td class="highlight" style="color: #fbbf24;">8.3%</td></tr>
+                    <tr><td>fixed_telephony</td><td class="highlight" style="color: #fbbf24;">7.3%</td></tr>
+                    <tr><td>signaling_and_security</td><td class="highlight" style="color: #fbbf24;">7.1%</td></tr>
+                </table>
+            </div>
+            <div class="tile">
+                <div class="icon" style="color: #3b82f6; margin-bottom: 5px;"><i class="fa-solid fa-heart-crack"></i></div>
+                <h3 style="color: #3b82f6; font-size: 22px; margin-bottom: 10px;">Calidad del Producto</h3>
+                <table class="mini-table">
+                    <tr><th>Categoría</th><th style="text-align:right;">Tasa</th></tr>
+                    <tr><td>audio</td><td class="highlight" style="color: #3b82f6;">5.3%</td></tr>
+                    <tr><td>art</td><td class="highlight" style="color: #3b82f6;">4.3%</td></tr>
+                    <tr><td><strong>office_furniture</strong></td><td class="highlight" style="color: #3b82f6;">3.7%</td></tr>
+                    <tr><td>home_confort</td><td class="highlight" style="color: #3b82f6;">3.4%</td></tr>
+                    <tr><td style="color:transparent;">.</td><td></td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 10 -->
+<div class="slide-container" id="slide10">
+    <h2 class="slide-title">Conclusión Ejecutiva: El Verdadero Foco Crítico</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div class="bullet-list">
+                <ul>
+                    <li>
+                        <i class="fa-solid fa-truck-ramp-box" style="color:#14b8a6;"></i>
+                        <strong>Logística Transversal</strong>
+                        <p>El 70.5% de los dolores apuntan a entregas. Este problema es transversal a todo el catálogo, no exclusivo de una categoría, indicando un fallo en el proceso central de envío.</p>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-shirt" style="color:#14b8a6;"></i>
+                        <strong>Nichos de Alta Fricción</strong>
+                        <p>Categorías como <code>fashion_male_clothing</code> y <code>fixed_telephony</code> tienen las tasas relativas más altas de queja, aunque representan un bajo volumen de ventas absolutas.</p>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-star-half-stroke" style="color:#14b8a6;"></i>
+                        <strong>Estrellas Estables</strong>
+                        <p>Las categorías top de ventas (<code>bed_bath_table</code>, <code>health_beauty</code>) acumulan muchas quejas brutas, pero sus tasas (14%) son proporcionales a su volumen masivo.</p>
+                    </li>
+                </ul>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <div class="image-wrapper" style="height: 220px; border-radius: 12px 12px 0 0; border: 2px solid #f43f5e; border-bottom: none;">
+                    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1000&q=80" alt="Bodega de muebles de oficina y logística">
+                </div>
+                <div class="alert-box" style="margin-top: 0; border-radius: 0 0 12px 12px; border-top: none;">
+                    <h4><i class="fa-solid fa-triangle-exclamation"></i> Alerta Crítica: Office Furniture</h4>
+                    <p>Es la categoría de alto volumen más crítica global (<strong>21.2% de tasa de falla</strong>). Además, es la <strong>única categoría</strong> que lidera simultáneamente los reclamos por logística, pedidos incorrectos y defectos de calidad. Requiere auditoría urgente.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 11: Section 3 -->
+<div class="slide-container" id="slide11">
+    <div class="section-title-layout">
+        <hr>
+        <h2>3. Segmentación de Clientes</h2>
+        <p class="subtitle">Identificación de Clientes Fieles vs Riesgo (Modelo RFM + Clustering)</p>
+    </div>
+</div>
+
+<!-- Slide 12 -->
+<div class="slide-container" id="slide12">
+    <h2 class="slide-title">Segmentación de Clientes: El Reto Estructural</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div class="bullet-list">
+                <h3 style="margin-bottom: 20px;">Framework Base: RFM</h3>
+                <ul>
+                    <li>
+                        <i class="fa-solid fa-magnifying-glass-chart"></i>
+                        <strong>El problema de K-Means Puro</strong>
+                        <p>Al analizar los 93.358 clientes únicos, se descubrió que <strong>el 97.0% tiene una Frecuencia = 1</strong> (compradores de una sola vez).</p>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-chart-line"></i>
+                        <strong>Varianza Nula</strong>
+                        <p>K-Means fallaba al segmentar porque la variable Frequency no tenía suficiente varianza. El algoritmo solo dividía por Gasto Monetario, creando grupos inútiles para medir "fidelidad".</p>
+                    </li>
+                </ul>
+            </div>
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+                <div class="flow-box">
+                    <h4>Nivel 1: Regla de Negocio (Frecuencia)</h4>
+                    <p>Separación inicial rígida: <br>
+                    • <strong>F >= 2:</strong> Compradores recurrentes (3.0%)<br>
+                    • <strong>F = 1:</strong> Compradores únicos (97.0%)</p>
+                </div>
+                <div class="flow-box" style="border-left-color: #a855f7; background: rgba(168, 85, 247, 0.1);">
+                    <h4 style="color: #c084fc;">Nivel 2: Clustering K-Means (R + M)</h4>
+                    <p>Aplicación de K-Means (k=2) dentro de cada grupo sobre las variables de Recency y Monetary, optimizado mediante <em>Silhouette Score</em>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 13 -->
+<div class="slide-container" id="slide13">
+    <h2 class="slide-title">Resultados: Los 4 Segmentos RFM</h2>
+    <div class="content-area">
+        <div class="two-column" style="align-items: center;">
+            <div class="chart-container" style="padding-top: 0;">
+                <div class="doughnut-chart-container">
+                    <div class="doughnut-chart" style="background: conic-gradient(#64748b 0% 93.8%, #3b82f6 93.8% 97%, #f43f5e 97% 99.8%, #14b8a6 99.8% 100%); width: 340px; height: 340px;"></div>
+                    <ul class="legend">
+                        <li><div class="color-box" style="background-color: #64748b;"></div>Esporádico Común (93.8%)</li>
+                        <li><div class="color-box" style="background-color: #3b82f6;"></div>Alto Valor Durmiente (3.2%)</li>
+                        <li><div class="color-box" style="background-color: #f43f5e;"></div>Cliente Fiel en Riesgo (2.8%)</li>
+                        <li><div class="color-box" style="background-color: #14b8a6;"></div>Cliente Fiel Activo (0.2%)</li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <table class="table-layout" style="width: 100%; margin-top: 20px;">
+                    <thead>
+                        <tr>
+                            <th>Segmento</th>
+                            <th>Recency</th>
+                            <th>Freq.</th>
+                            <th>Gasto Medio</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="color: #14b8a6; font-weight: 600;">Fiel Activo</td>
+                            <td>202 días</td>
+                            <td>2.5</td>
+                            <td>R$ 1,047</td>
+                            <td style="color: #fbbf24;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></td>
+                        </tr>
+                        <tr>
+                            <td style="color: #f43f5e; font-weight: 600;">Fiel en Riesgo</td>
+                            <td>222 días</td>
+                            <td>2.1</td>
+                            <td>R$ 205</td>
+                            <td style="color: #fbbf24;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></td>
+                        </tr>
+                        <tr>
+                            <td style="color: #3b82f6; font-weight: 600;">Alto Valor Durmiente</td>
+                            <td>246 días</td>
+                            <td>1.0</td>
+                            <td>R$ 981</td>
+                            <td style="color: #fbbf24;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></td>
+                        </tr>
+                        <tr>
+                            <td style="color: #64748b; font-weight: 600;">Esporádico Común</td>
+                            <td>238 días</td>
+                            <td>1.0</td>
+                            <td>R$ 109</td>
+                            <td style="color: #fbbf24;"><i class="fa-solid fa-star"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 14 -->
+<div class="slide-container" id="slide14">
+    <h2 class="slide-title">Perfiles Estratégicos y Plan de Acción</h2>
+    <div class="content-area">
+        <div class="grid-2x2">
+            <div class="tile" style="border-top: 4px solid #14b8a6;">
+                <h3 style="color: #14b8a6; font-size: 22px; margin-bottom: 5px;">Cliente Fiel Activo (0.2%)</h3>
+                <p style="font-size: 15px; color: #94a3b8; margin-bottom: 10px;">Gasto: R$1,047 | Freq: 2.5 | Hace 202 días</p>
+                <p style="font-size: 16px;"><strong>Perfil:</strong> El "segmento de oro". Recompran con frecuencia, son los más recientes y de mayor gasto a largo plazo.</p>
+                <p style="font-size: 16px; margin-top: auto; color: #f8fafc;"><strong>Acción:</strong> Programa de fidelización y beneficios exclusivos. Retenerlos y premiarlos.</p>
+            </div>
+            <div class="tile" style="border-top: 4px solid #f43f5e;">
+                <h3 style="color: #f43f5e; font-size: 22px; margin-bottom: 5px;">Cliente Fiel en Riesgo (2.8%)</h3>
+                <p style="font-size: 15px; color: #94a3b8; margin-bottom: 10px;">Gasto: R$205 | Freq: 2.1 | Hace 222 días</p>
+                <p style="font-size: 16px;"><strong>Perfil:</strong> Son fieles comprobados (han recomprado), pero llevan bastante tiempo sin mostrar actividad.</p>
+                <p style="font-size: 16px; margin-top: auto; color: #f8fafc;"><strong>Acción:</strong> Campaña de reactivación urgente con incentivo (descuento, oferta). Actuar antes del abandono.</p>
+            </div>
+            <div class="tile" style="border-top: 4px solid #3b82f6;">
+                <h3 style="color: #3b82f6; font-size: 22px; margin-bottom: 5px;">Alto Valor Durmiente (3.2%)</h3>
+                <p style="font-size: 15px; color: #94a3b8; margin-bottom: 10px;">Gasto: R$981 | Freq: 1.0 | Hace 246 días</p>
+                <p style="font-size: 16px;"><strong>Perfil:</strong> Compraron 1 sola vez, pero su gasto fue 9 veces mayor al común. Tienen alta capacidad adquisitiva.</p>
+                <p style="font-size: 16px; margin-top: auto; color: #f8fafc;"><strong>Acción:</strong> Campaña de segunda compra segmentada por su categoría inicial. Convertirlos en recurrentes.</p>
+            </div>
+            <div class="tile" style="border-top: 4px solid #64748b;">
+                <h3 style="color: #94a3b8; font-size: 22px; margin-bottom: 5px;">Esporádico Común (93.8%)</h3>
+                <p style="font-size: 15px; color: #94a3b8; margin-bottom: 10px;">Gasto: R$109 | Freq: 1.0 | Hace 238 días</p>
+                <p style="font-size: 16px;"><strong>Perfil:</strong> El grueso del negocio. Compra única a precio estándar. Baja recompra natural por el tipo de marketplace.</p>
+                <p style="font-size: 16px; margin-top: auto; color: #f8fafc;"><strong>Acción:</strong> Campañas masivas de bajo costo (email marketing). Pequeña conversión = gran impacto por volumen.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 15: Section 4 -->
+<div class="slide-container" id="slide15">
+    <div class="section-title-layout">
+        <hr>
+        <h2>4. Arquitectura del Motor de Recomendación</h2>
+        <p class="subtitle">Despliegue Predictivo en Tiempo Real (&lt;100ms) y Escalabilidad</p>
+    </div>
+</div>
+
+<!-- Slide 16 -->
+<div class="slide-container" id="slide16">
+    <h2 class="slide-title">Principio de Diseño y Flujo de Datos</h2>
+    <div class="content-area">
+        <p style="font-size: 22px; text-align: center; margin-bottom: 40px; color: #f8fafc; max-width: 90%; margin-left: auto; margin-right: auto;">
+            El modelo predictivo <strong style="color: #f43f5e;">no calcula todo en tiempo real</strong>. <br>Las recomendaciones maestras se pre-computan offline y se sirven como lecturas de caché ultra-rápidas. El pipeline online solo orquesta la extracción y aplica personalización de último milisegundo.
+        </p>
+
+        <div class="tech-flow">
+            <div class="tech-node">
+                <i class="fa-solid fa-user-check" style="font-size: 30px; color: #14b8a6; margin-bottom: 10px;"></i>
+                <h4>1. Request Web</h4>
+                <p>El cliente navega. Identificación de sesión activa (Customer ID o ID Anónimo).</p>
+            </div>
+            <i class="fa-solid fa-arrow-right tech-arrow"></i>
+            <div class="tech-node highlight">
+                <i class="fa-solid fa-bolt" style="font-size: 30px; color: #3b82f6; margin-bottom: 10px;"></i>
+                <h4>2. Lookup Caché (Redis)</h4>
+                <p>Extracción en &lt;5ms del Perfil de Segmento (RFM), Historial de Compras y Vistas.</p>
+            </div>
+            <i class="fa-solid fa-arrow-right tech-arrow"></i>
+            <div class="tech-node">
+                <i class="fa-solid fa-filter" style="font-size: 30px; color: #14b8a6; margin-bottom: 10px;"></i>
+                <h4>3. Two-Stage Engine</h4>
+                <p>Generación de Candidatos Iniciales + Algoritmo de Ranking Dinámico.</p>
+            </div>
+            <i class="fa-solid fa-arrow-right tech-arrow"></i>
+            <div class="tech-node highlight" style="border-color: #a855f7; box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);">
+                <i class="fa-solid fa-display" style="font-size: 30px; color: #a855f7; margin-bottom: 10px;"></i>
+                <h4>4. Renderizado Web</h4>
+                <p>Devolución de los Top-N productos mediante API REST (FastAPI) al frontend.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 17 -->
+<div class="slide-container" id="slide17">
+    <h2 class="slide-title">Two-Stage Recommender (Arquitectura en 2 Etapas)</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <div class="column-header">
+                    <h4 style="font-size: 22px;">Etapa 1: Candidate Generation <br><span style="font-size: 16px; color: #94a3b8; font-weight: 400;">(Reducción del espacio de búsqueda)</span></h4>
+                </div>
+                <div class="bullet-list">
+                    <ul>
+                        <li><i class="fa-solid fa-layer-group"></i><strong>Filtro por Segmento (RFM)</strong><p>Se toma el <code>cluster_id</code> del cliente y se recupera un pool genérico de los productos más relevantes para ese nicho.</p></li>
+                        <li><i class="fa-solid fa-database"></i><strong>Pool Pre-computado</strong><p>Se obtienen 50-200 productos candidatos pre-calculados, excluyendo dinámicamente aquellos ítems que ya compró.</p></li>
+                        <li><i class="fa-solid fa-gauge-high"></i><strong>Propósito del Filtro</strong><p>Evitar iterar sobre los 32.000 productos del catálogo. Mejora radicalmente la latencia para la siguiente etapa.</p></li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <div class="column-header blue-accent">
+                    <h4 style="font-size: 22px;">Etapa 2: Ranking Dinámico <br><span style="font-size: 16px; color: #94a3b8; font-weight: 400;">(Personalización de último milisegundo)</span></h4>
+                </div>
+                <div class="alert-box" style="margin-top: 0; margin-bottom: 20px; padding: 15px;">
+                    <h4 style="font-size: 18px; margin-bottom: 5px;"><i class="fa-solid fa-circle-info"></i> Reto de Esparsidad (Olist)</h4>
+                    <p style="font-size: 15px;">Dado que el 97% de los clientes compró 1 sola vez, algoritmos de matriz fallarían. Se requiere enrutamiento adaptativo.</p>
+                </div>
+                <table class="mini-table">
+                    <tr><th>Escenario del Cliente</th><th>Algoritmo Aplicado</th></tr>
+                    <tr><td>Historial Rico (>1 compra)</td><td class="highlight" style="color: #3b82f6;">Item-based CF (Co-ocurrencia)</td></tr>
+                    <tr><td>Historial Pobre (1 compra)</td><td class="highlight" style="color: #14b8a6;">Content-Based (Features producto)</td></tr>
+                    <tr><td>Cold Start (Nuevo / Anónimo)</td><td class="highlight" style="color: #a855f7;">Top Global / Categoría Popular</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 18 -->
+<div class="slide-container" id="slide18">
+    <h2 class="slide-title">Señales de Entrada y Stack Tecnológico</h2>
+    <div class="content-area">
+        <div class="tiled-content">
+            <div class="tile" style="border-top: 4px solid #14b8a6; padding: 30px;">
+                <div class="icon" style="margin-bottom: 10px;"><i class="fa-solid fa-satellite-dish"></i></div>
+                <h3 style="color: #14b8a6; font-size: 22px; margin-bottom: 15px;">Señales Implícitas (Vitales)</h3>
+                <p>En un dataset con alta esparsidad, el comportamiento de navegación multiplica exponencialmente el volumen de datos por usuario.</p>
+                <ul class="bullet-list" style="margin-top: 15px;">
+                    <li style="margin-bottom: 10px; padding-left: 30px;"><i class="fa-solid fa-eye" style="font-size: 16px;"></i><strong style="font-size: 17px; margin-bottom: 0; display: inline;">Vistas de productos</strong> no comprados.</li>
+                    <li style="margin-bottom: 10px; padding-left: 30px;"><i class="fa-solid fa-clock" style="font-size: 16px;"></i><strong style="font-size: 17px; margin-bottom: 0; display: inline;">Tiempo de permanencia</strong>.</li>
+                    <li style="margin-bottom: 10px; padding-left: 30px;"><i class="fa-solid fa-cart-shopping" style="font-size: 16px;"></i><strong style="font-size: 17px; margin-bottom: 0; display: inline;">Carritos abandonados.</strong></li>
+                </ul>
+            </div>
+            
+            <div class="tile" style="border-top: 4px solid #3b82f6; flex: 1.5; padding: 30px;">
+                <div class="icon" style="color: #3b82f6; margin-bottom: 10px;"><i class="fa-solid fa-server"></i></div>
+                <h3 style="color: #3b82f6; font-size: 22px; margin-bottom: 15px;">Stack Tecnológico Propuesto</h3>
+                <table class="mini-table" style="margin-top: 0; font-size: 17px;">
+                    <tr><th>Componente</th><th>Tecnología</th><th>Rol de Producción</th></tr>
+                    <tr><td><strong>API Serving</strong></td><td style="color: #14b8a6;"><i class="fa-solid fa-bolt" style="margin-right: 5px;"></i> FastAPI</td><td>Endpoint REST, orquesta flujo online</td></tr>
+                    <tr><td><strong>Caché</strong></td><td style="color: #f43f5e;"><i class="fa-solid fa-memory" style="margin-right: 5px;"></i> Redis</td><td>Pools por cluster, lecturas ultrarrápidas</td></tr>
+                    <tr><td><strong>Base de Datos</strong></td><td style="color: #3b82f6;"><i class="fa-solid fa-database" style="margin-right: 5px;"></i> PostgreSQL</td><td>Perfiles, historial y tracking transaccional</td></tr>
+                    <tr><td><strong>Modelos ML</strong></td><td style="color: #fbbf24;"><i class="fa-brands fa-python" style="margin-right: 5px;"></i> Scikit-learn</td><td>Algoritmos de Ranking y Content-Based</td></tr>
+                    <tr><td><strong>Orquestación</strong></td><td style="color: #a855f7;"><i class="fa-solid fa-diagram-project" style="margin-right: 5px;"></i> Airflow</td><td>Reentrenamiento batch y publicación</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 19 -->
+<div class="slide-container bleed-image-layout" id="slide19">
+    <div class="content-container">
+        <h2 class="slide-title" style="margin-bottom: 20px;">Pipeline Offline y Feedback Loop</h2>
+        <div class="content-area">
+            <div class="flow-box">
+                <h4><i class="fa-solid fa-arrows-rotate"></i> Pipeline Batch (Ej. Cada 24h)</h4>
+                <p style="font-size: 16px;"><strong>1. Update:</strong> Reasignación dinámica de clientes a clusters.<br>
+                <strong>2. Re-compute:</strong> Cálculo de productos top por segmento.<br>
+                <strong>3. Matrices:</strong> Actualización de similitudes (Item-based CF).<br>
+                <strong>4. Publish:</strong> Escritura atómica en caché para evitar downtime.</p>
+            </div>
+            <div class="flow-box" style="border-left-color: #f43f5e; background: rgba(244, 63, 94, 0.1); margin-top: 20px;">
+                <h4 style="color: #fb7185;"><i class="fa-solid fa-infinity"></i> El Feedback Loop Continuo</h4>
+                <p style="font-size: 16px;">Un motor estático no aprende. El sistema captura la interacción de cada recomendación servida para inyectar este <em>feedback explícito</em> en el siguiente ciclo de reentrenamiento, evaluando directamente métricas como <strong>CTR y Conversion Rate</strong>.</p>
+            </div>
+        </div>
+    </div>
+    <div class="image-container">
+        <img class="bleed-image-side" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80" alt="Data Pipeline and Feedback Loop abstract technology glowing network">
+    </div>
+</div>
+
+<!-- Slide 20: Section 5 -->
+<div class="slide-container" id="slide20">
+    <div class="section-title-layout">
+        <hr>
+        <h2>5. Estrategia Omnicanal: Ubicación Física</h2>
+        <p class="subtitle">Análisis Geoespacial para el Centro Comercial Insignia</p>
+    </div>
+</div>
+
+<!-- Slide 21 -->
+<div class="slide-container" id="slide21">
+    <h2 class="slide-title">Paso 1: Selección de la Ciudad Estratégica</h2>
+    <div class="content-area">
+        <div class="two-column" style="align-items: center;">
+            <div style="flex: 1.2;">
+                <table class="exec-table">
+                    <thead>
+                        <tr>
+                            <th>Ciudad / Estado</th>
+                            <th>Órdenes (Delivered)</th>
+                            <th>Ingresos Totales (R$)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-winner">
+                            <td><i class="fa-solid fa-crown" style="color:#fbbf24; margin-right:8px;"></i> São Paulo (SP)</td>
+                            <td>15,045</td>
+                            <td>R$ 1,859,556</td>
+                        </tr>
+                        <tr>
+                            <td>Rio de Janeiro (RJ)</td>
+                            <td>6,601</td>
+                            <td>R$ 955,573</td>
+                        </tr>
+                        <tr>
+                            <td>Belo Horizonte (MG)</td>
+                            <td>2,697</td>
+                            <td>R$ 346,039</td>
+                        </tr>
+                        <tr>
+                            <td>Brasilia (DF)</td>
+                            <td>2,071</td>
+                            <td>R$ 295,814</td>
+                        </tr>
+                        <tr>
+                            <td>Curitiba (PR)</td>
+                            <td>1,489</td>
+                            <td>R$ 205,999</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="flex: 0.8; display: flex; flex-direction: column;">
+                <div class="alert-box" style="border-color: #14b8a6; background: rgba(20, 184, 166, 0.1);">
+                    <h4 style="color: #14b8a6;"><i class="fa-solid fa-map-location-dot"></i> Liderazgo Contundente</h4>
+                    <p>São Paulo lidera de forma absoluta en ambos criterios de selección. Concentra un volumen de negocio casi <strong>2 veces superior</strong> a su competidor más cercano (Río de Janeiro). No existe ambigüedad en la decisión a nivel macro.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 22 -->
+<div class="slide-container" id="slide22">
+    <h2 class="slide-title">Paso 2: Cálculo del Punto Óptimo (São Paulo)</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <div class="column-header">
+                    <h4>Método: Centroide Ponderado</h4>
+                </div>
+                <p style="font-size: 18px; margin-bottom: 20px;">
+                    El objetivo no es el centro geográfico simple, sino minimizar la distancia a los clientes dando <strong>mayor peso (gravedad) a los clientes con mayor gasto histórico</strong>.
+                </p>
+                <div class="flow-box" style="background: #0b1120; border-color: #f43f5e;">
+                    <h4 style="color: #f43f5e; font-family: monospace; font-size: 18px;">Fórmula Aplicada</h4>
+                    <p style="font-family: monospace; font-size: 16px; color: #cbd5e1;">lat_óptima = Σ(lat_i × ingresos_i) / Σ(ingresos_i)<br>lng_óptima = Σ(lng_i × ingresos_i) / Σ(ingresos_i)</p>
+                </div>
+                
+                <table class="mini-table" style="margin-top: 25px;">
+                    <tr><th>Método de Cálculo</th><th>Latitud</th><th>Longitud</th></tr>
+                    <tr><td>Centroide Simple</td><td>-23.571916</td><td>-46.633620</td></tr>
+                    <tr><td style="color: #14b8a6; font-weight: bold;">Centroide Ponderado</td><td style="color: #14b8a6;">-23.571436</td><td style="color: #14b8a6;">-46.633771</td></tr>
+                </table>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+                <div class="icon" style="color: #fbbf24; font-size: 40px; margin-bottom: 20px; text-align: center;"><i class="fa-solid fa-lightbulb"></i></div>
+                <h3 style="color: #fbbf24; font-size: 26px; text-align: center; margin-bottom: 15px;">Insight Espacial Revelador</h3>
+                <p style="font-size: 21px; text-align: center; line-height: 1.6; color: #f8fafc; padding: 0 20px;">
+                    Ambos centroides resultaron ser <strong>prácticamente idénticos</strong>. Esto demuestra que los clientes de alto gasto están distribuidos de forma <em>homogénea</em> por toda la ciudad.<br><br>No existe una "Zona VIP" concentrada que arrastre el punto óptimo, lo que obliga a priorizar la <strong>accesibilidad central</strong>.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 23 -->
+<div class="slide-container bleed-image-layout" id="slide23">
+    <div class="content-container">
+        <h2 class="slide-title" style="margin-bottom: 20px;">Ubicación: Perdizes / Pompeia</h2>
+        <div class="content-area">
+            <div class="highlight-numbers-layout" style="display: flex; flex-direction: column; align-items: flex-start;">
+                <div>
+                    <div class="number" style="font-size: 100px;">15 km</div>
+                    <div class="number-label" style="font-size: 22px;">Radio para cubrir el 80% de los clientes</div>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <ul class="bullet-list">
+                        <li><i class="fa-solid fa-location-crosshairs"></i><strong>Lat: -23.5714 | Lng: -46.6337</strong><p>Punto exacto calculado matemáticamente.</p></li>
+                        <li><i class="fa-solid fa-sack-dollar"></i><strong>R$ 1.85 Millones</strong><p>Ingresos base representados en este alcance.</p></li>
+                        <li><i class="fa-solid fa-building-circle-check"></i><strong>Decisión Ejecutiva</strong><p>Refuerza la elección de un punto céntrico altamente accesible por encima de zonas tradicionalmente exclusivas (Jardins, Itaim Bibi), garantizando tráfico masivo.</p></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="image-container">
+        <img class="bleed-image-side" src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1000&q=80" alt="Mapa aéreo urbano de la ciudad de São Paulo">
+    </div>
+</div>
+
+<!-- Slide 24: Section 6 -->
+<div class="slide-container" id="slide24">
+    <div class="section-title-layout">
+        <hr>
+        <h2>6. Base de Conocimientos Simulada</h2>
+        <p class="subtitle">Estructuración de Contexto (RAG) para Agentes de IA</p>
+    </div>
+</div>
+
+<!-- Slide 25 -->
+<div class="slide-container" id="slide25">
+    <h2 class="slide-title">Selección de Catálogo y Estructura JSON</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <div class="column-header">
+                    <h4 style="font-size: 22px;">Catálogo Estratégico (Top Ventas)</h4>
+                </div>
+                <p style="font-size: 16px; margin-bottom: 20px;">Se seleccionaron 3 productos analizados en el <strong>Punto 1</strong> que abarcan perfiles comerciales distintos para alimentar la IA:</p>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div class="tile" style="padding: 15px; flex: none; border-left: 4px solid #fbbf24;">
+                        <h4 style="color: #fbbf24; margin: 0 0 5px 0; font-size: 18px;"><i class="fa-solid fa-star" style="margin-right: 8px;"></i>1. Health & Beauty</h4>
+                        <p style="margin:0; font-size: 15px;"><strong>Kit de Belleza Premium</strong> | R$ 130.28 <br><span style="color:#94a3b8">Estrella por Rentabilidad (#1 Ingresos)</span></p>
+                    </div>
+                    <div class="tile" style="padding: 15px; flex: none; border-left: 4px solid #14b8a6;">
+                        <h4 style="color: #14b8a6; margin: 0 0 5px 0; font-size: 18px;"><i class="fa-solid fa-arrows-rotate" style="margin-right: 8px;"></i>2. Bed, Bath & Table</h4>
+                        <p style="margin:0; font-size: 15px;"><strong>Colección Hogar</strong> | R$ 93.44 <br><span style="color:#94a3b8">Estrella por Demanda Masiva (#1 Volumen)</span></p>
+                    </div>
+                    <div class="tile" style="padding: 15px; flex: none; border-left: 4px solid #a855f7;">
+                        <h4 style="color: #a855f7; margin: 0 0 5px 0; font-size: 18px;"><i class="fa-solid fa-gem" style="margin-right: 8px;"></i>3. Watches & Gifts</h4>
+                        <p style="margin:0; font-size: 15px;"><strong>Relojes Exclusivos</strong> | R$ 199.04 <br><span style="color:#94a3b8">Segmento Premium (Alto Ticket Aspiracional)</span></p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="column-header blue-accent">
+                    <h4 style="font-size: 22px;">Base de Conocimiento (JSON Snippet)</h4>
+                </div>
+                <div class="code-block">
+{
+  "version": "1.0",
+  "descripcion": "Base de conocimientos simulada",
+  "total_productos": 3,
+  "productos": [
+    {
+      "id": "PROD-001",
+      "categoria": "health_beauty",
+      "nombre": "Kit de Belleza y Cuidado Personal Premium",
+      "descripcion": "Descubre nuestra línea premium de productos de belleza y cuidado personal. Desde skincare hidratante hasta maquillaje de larga duración, cada artículo está seleccionado para realzar tu rutina diaria de bienestar. Ideal para quienes buscan verse y sentirse bien sin salir de casa. ¡El autocuidado nunca fue tan accesible!",
+      "precio_promedio_real": 130.28,
+      "rango_precios": {
+        "minimo": 1.2,
+        "maximo": 3124.0
+      },
+      "unidades_vendidas": 9465,
+      "destacado": true,
+      "tags": [
+        "belleza",
+        "skincare",
+        "cuidado personal",
+        "bienestar",
+        "salud"
+      ]
+    }
+  ]
+}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 26: Section 7 (NEW) -->
+<div class="slide-container" id="slide26">
+    <div class="section-title-layout">
+        <hr>
+        <h2>7. IA Generativa: System Prompts y Agentes</h2>
+        <p class="subtitle">Arquitectura y Orquestación de Agentes LLM Hiper-Personalizados</p>
+    </div>
+</div>
+
+<!-- Slide 27: POINT 7 - Architecture (NEW) -->
+<div class="slide-container" id="slide27">
+    <h2 class="slide-title">Arquitectura del Agente: Orquestación de Contexto</h2>
+    <div class="content-area">
+        <div class="agent-arch">
+            <div class="arch-row">
+                <div class="arch-box">
+                    <h4 style="color: #14b8a6; margin: 0 0 10px 0;"><i class="fa-solid fa-address-card"></i> CRM (Simulado)</h4>
+                    <p style="margin: 0; font-size: 15px; color: #cbd5e1;">Edad, Género</p>
+                </div>
+                <div class="arch-box">
+                    <h4 style="color: #3b82f6; margin: 0 0 10px 0;"><i class="fa-solid fa-chart-pie"></i> P3: Segmentación</h4>
+                    <p style="margin: 0; font-size: 15px; color: #cbd5e1;">Perfil, RFM</p>
+                </div>
+                <div class="arch-box">
+                    <h4 style="color: #f43f5e; margin: 0 0 10px 0;"><i class="fa-solid fa-comment-dots"></i> P2: NLP</h4>
+                    <p style="margin: 0; font-size: 15px; color: #cbd5e1;">Queja Previa, Dolor</p>
+                </div>
+            </div>
+            
+            <i class="fa-solid fa-arrow-down arch-arrow"></i>
+            
+            <div class="arch-box highlight" style="width: 400px; padding: 25px;">
+                <h4 style="color: #a855f7; font-size: 22px; margin: 0 0 15px 0;"><i class="fa-solid fa-microchip"></i> Middleware (Backend)</h4>
+                <ul style="text-align: left; font-size: 16px; color: #e2e8f0; list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 8px;"><i class="fa-solid fa-check" style="color: #a855f7; margin-right: 10px;"></i>1. Calcula historial desde RFM</li>
+                    <li style="margin-bottom: 8px;"><i class="fa-solid fa-check" style="color: #a855f7; margin-right: 10px;"></i>2. Asigna Rol (Luna/Marco/VIP)</li>
+                    <li style="margin-bottom: 8px;"><i class="fa-solid fa-check" style="color: #a855f7; margin-right: 10px;"></i>3. Estructura Perfil en JSON</li>
+                    <li><i class="fa-solid fa-check" style="color: #a855f7; margin-right: 10px;"></i>4. Renderiza Prompt Dinámico</li>
+                </ul>
+            </div>
+            
+            <i class="fa-solid fa-arrow-down arch-arrow"></i>
+            
+            <div class="arch-row">
+                <div class="arch-box" style="border-color: #14b8a6; background: rgba(20, 184, 166, 0.1);">
+                    <h4 style="color: #14b8a6; margin: 0;">Luna (Digital)</h4>
+                </div>
+                <div class="arch-box" style="border-color: #3b82f6; background: rgba(59, 130, 246, 0.1);">
+                    <h4 style="color: #3b82f6; margin: 0;">Marco (Retención)</h4>
+                </div>
+                <div class="arch-box" style="border-color: #fbbf24; background: rgba(251, 191, 36, 0.1);">
+                    <h4 style="color: #fbbf24; margin: 0;">Concierge (VIP)</h4>
+                </div>
+            </div>
+            <p style="margin-top: 20px; font-weight: bold; color: #f8fafc; font-size: 18px;">Modelos de Producción: Claude / GPT / Gemini</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 28: POINT 7 - Design Decisions (NEW) -->
+<div class="slide-container" id="slide28">
+    <h2 class="slide-title">Decisiones de Diseño de Prompts (Prompt Engineering)</h2>
+    <div class="content-area">
+        <div class="tiled-content">
+            <div class="tile" style="border-top: 4px solid #f43f5e;">
+                <div class="icon" style="color: #f43f5e;"><i class="fa-solid fa-ban"></i></div>
+                <h3 style="color: #f43f5e; font-size: 22px; margin-bottom: 15px;">Solo 1 Skill Integrada</h3>
+                <p style="font-size: 16px;">El agente tiene una única skill (<code>check_order_status</code>). Las skills deben reservarse para API calls (datos en vivo). La <strong>recomendación y la empatía</strong> son capacidades nativas de <em>razonamiento</em> del modelo; es un error tratar de resolverlas con lógicas deterministas (if/else).</p>
+            </div>
+            <div class="tile" style="border-top: 4px solid #3b82f6;">
+                <div class="icon" style="color: #3b82f6;"><i class="fa-solid fa-user-tie"></i></div>
+                <h3 style="color: #3b82f6; font-size: 22px; margin-bottom: 15px;">Briefing > Reglas Numeradas</h3>
+                <p style="font-size: 16px;">Los modelos de producción (Claude, GPT) razonan mejor desde un <strong>contexto rico (Persona)</strong> y un objetivo claro que desde un checklist rígido. Un briefing permite que el agente conserve su capacidad de adaptación si el cliente dice algo inesperado.</p>
+            </div>
+            <div class="tile" style="border-top: 4px solid #14b8a6;">
+                <div class="icon" style="color: #14b8a6;"><i class="fa-solid fa-code"></i></div>
+                <h3 style="color: #14b8a6; font-size: 22px; margin-bottom: 15px;">Contexto en Formato JSON</h3>
+                <p style="font-size: 16px;">Inyectar el perfil del cliente en JSON elimina ambigüedades. Permite al LLM distinguir claramente variables y razonar sobre estructuras anidadas (ej. la experiencia negativa previa o el catálogo de productos) sin confundirlas con instrucciones del sistema.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 29: POINT 7 - Prompt 1 (NEW) -->
+<div class="slide-container" id="slide29">
+    <h2 class="slide-title">Escenario 1: Asesor Digital (Luna)</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div style="flex: 0.8;">
+                <div class="column-header">
+                    <h4 style="font-size: 20px;">Contexto del Cliente</h4>
+                </div>
+                <ul class="bullet-list" style="margin-bottom: 25px;">
+                    <li><i class="fa-solid fa-user"></i><strong>Perfil Base</strong><p>Mujer, 27 años.</p></li>
+                    <li><i class="fa-solid fa-chart-pie"></i><strong>Segmento (P3)</strong><p>Cliente_Fiel_Activo (Gasto acumulado R$7,388).</p></li>
+                    <li><i class="fa-solid fa-bullseye"></i><strong>Objetivo del Agente</strong><p>Tono directo, entusiasta, tuteo. Recomendar basándose en el alto historial de compras y buscar el cross-sell orgánico.</p></li>
+                </ul>
+            </div>
+            <div style="flex: 1.2;">
+                <div class="column-header blue-accent">
+                    <h4 style="font-size: 20px;">Render del System Prompt</h4>
+                </div>
+                <div class="code-block" style="font-size: 14px;">
+Eres Luna, asesora de compras de la tienda. Eres directa, cercana y entusiasta — como ese amigo que siempre sabe que esta de moda y genuinamente quiere ayudarte a encontrar algo bueno, no solo venderte algo.
+
+PERFIL DEL CLIENTE:
+{
+  "edad": 27,
+  "genero": "Femenino",
+  "segmento_crm": "Cliente_Fiel_Activo",
+  "historial_compras": "cliente recurrente (2 compras), gasto acumulado alto de R$7388, inactivo hace 515 dias."
+}
+
+CATALOGO:
+[
+  {
+    "id": "PROD-001",
+    "nombre": "Kit de Belleza y Cuidado Personal Premium",
+    ... [Mapeo de P6 JSON]
+  }
+]
+
+ESTADO DEL ULTIMO PEDIDO (via API):
+Ultimo pedido hace 515 dias. Sin pedidos recientes en el sistema.
+
+Habla en segunda persona informal (tuteo). Tu objetivo en esta conversacion es que el cliente encuentre algo que le emocione comprar, basandote en su historial y en lo que tiene disponible en el catalogo. Recomienda con criterio, no con presion.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 30: POINT 7 - Prompt 2 (NEW) -->
+<div class="slide-container" id="slide30">
+    <h2 class="slide-title">Escenario 2: Asesor de Confianza (Marco)</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div style="flex: 0.8;">
+                <div class="column-header" style="border-left-color: #f43f5e;">
+                    <h4 style="font-size: 20px;">Contexto del Cliente</h4>
+                </div>
+                <ul class="bullet-list" style="margin-bottom: 25px;">
+                    <li><i class="fa-solid fa-user" style="color: #f43f5e;"></i><strong>Perfil Base</strong><p>Hombre, 62 años.</p></li>
+                    <li><i class="fa-solid fa-chart-pie" style="color: #f43f5e;"></i><strong>Segmento (P3)</strong><p>Cliente_Fiel_En_Riesgo.</p></li>
+                    <li><i class="fa-solid fa-triangle-exclamation" style="color: #f43f5e;"></i><strong>Dolor (P2)</strong><p>Falla Logística ("Sempre recebi e essa compra me decepcionou").</p></li>
+                    <li><i class="fa-solid fa-bullseye" style="color: #f43f5e;"></i><strong>Objetivo del Agente</strong><p>Trato formal (usted). Empatía total. Recuperar confianza antes de intentar cualquier venta.</p></li>
+                </ul>
+            </div>
+            <div style="flex: 1.2;">
+                <div class="column-header blue-accent">
+                    <h4 style="font-size: 20px;">Render del System Prompt</h4>
+                </div>
+                <div class="code-block" style="font-size: 14px;">
+Eres Marco, asesor senior de atencion al cliente. Llevas anos acompanando a clientes que tuvieron malas experiencias y sabes que lo primero que necesitan es sentirse escuchados, no recibir una oferta.
+
+PERFIL DEL CLIENTE:
+{
+  "edad": 62,
+  "genero": "Masculino",
+  "segmento_crm": "Cliente_Fiel_En_Riesgo",
+  "experiencia_negativa_previa": {
+    "categoria": "Logistica_Retrasos",
+    "detalle_original": "GOSTARIA DE SABER O QUE HOUVE, SEMPRE RECEBI E ESSA COMPRA AGORA ME DECPCIONOU"
+  }
+}
+
+CATALOGO: [... JSON Catalogo ...]
+
+ESTADO DEL ULTIMO PEDIDO (via API):
+Ultimo pedido hace 692 dias. Sin pedidos recientes en el sistema.
+
+Trata al cliente de usted. Antes de cualquier recomendacion, reconoce genuinamente lo que paso y ofrece una solucion concreta al problema reportado. Solo si el cliente muestra apertura, introduce productos de forma natural, priorizando los que tienen mayor volumen de ventas y menor riesgo percibido. El objetivo es recuperar la confianza, no cerrar una venta.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 31: POINT 7 - Prompt 3 (NEW) -->
+<div class="slide-container" id="slide31">
+    <h2 class="slide-title">Escenario 3: Concierge VIP</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div style="flex: 0.8;">
+                <div class="column-header purple-accent">
+                    <h4 style="font-size: 20px;">Contexto del Cliente</h4>
+                </div>
+                <ul class="bullet-list" style="margin-bottom: 25px;">
+                    <li><i class="fa-solid fa-user" style="color: #a855f7;"></i><strong>Perfil Base</strong><p>Hombre, 45 años, Corporativo.</p></li>
+                    <li><i class="fa-solid fa-chart-pie" style="color: #a855f7;"></i><strong>Segmento (P3)</strong><p>Alto_Valor_Durmiente (Gasto único de R$13,440).</p></li>
+                    <li><i class="fa-solid fa-bullseye" style="color: #a855f7;"></i><strong>Objetivo del Agente</strong><p>Tono exclusivo y anticipatorio. Recomendar ticket alto, pero justificando el contexto (ej. regalos corporativos o compras en volumen).</p></li>
+                </ul>
+            </div>
+            <div style="flex: 1.2;">
+                <div class="column-header blue-accent">
+                    <h4 style="font-size: 20px;">Render del System Prompt</h4>
+                </div>
+                <div class="code-block" style="font-size: 14px;">
+Eres el servicio de atencion premium de la tienda, reservado para clientes de alto valor. Tu comunicacion es exclusiva y anticipatoria: conoces el perfil del cliente antes de que el hable y cada recomendacion esta justificada por ese perfil especifico.
+
+PERFIL DEL CLIENTE:
+{
+  "edad": 45,
+  "genero": "Masculino",
+  "segmento_crm": "Alto_Valor_Durmiente",
+  "historial_compras": "comprador de primera vez (1 compra), gasto acumulado alto de R$13440, inactivo hace 334 dias."
+}
+
+CATALOGO: [... JSON Catalogo ...]
+
+ESTADO DEL ULTIMO PEDIDO (via API):
+Ultimo pedido hace 334 dias. Sin pedidos recientes en el sistema.
+
+Trata al cliente de usted. Este cliente representa el segmento de mayor valor del negocio. Ofrece productos de ticket alto como primera opcion, pero con criterio: justifica la recomendacion en su historial y contexto. Si el contexto sugiere uso corporativo o compra para terceros, explora esa dimension. La conversacion debe sentirse como atencion de concierge, no como un chatbot de ventas.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 32: Q&A / Repo -->
+<div class="slide-container" id="slide32">
+    <div class="section-title-layout">
+        <h2 style="color: #14b8a6; font-size: 80px;">Repositorio y Código</h2>
+        <p style="font-size: 24px; max-width: 800px; margin: 20px auto;">Todos los notebooks, scripts de Python, Prompts y detalles matemáticos de cada cálculo se encuentran documentados exhaustivamente en el repositorio fuente.</p>
+        <div style="margin-top: 40px; padding: 15px 30px; border: 2px solid #3b82f6; border-radius: 30px; color: #f8fafc; font-size: 20px; display: inline-block;">
+            <i class="fa-brands fa-github" style="margin-right: 10px;"></i> https://github.com/KeniBrandonGM/pt_cientifico_datos_c_digitales_protecion
+        </div>
+    </div>
+</div>
+</div> <!-- End of presentation-area -->
+
+<!-- Presentation Controls -->
+<div class="controls">
+    <button onclick="prevSlide()" title="Anterior (Flecha Izquierda)"><i class="fa-solid fa-chevron-left"></i></button>
+    <span id="slide-counter">1 / 32</span>
+    <button onclick="nextSlide()" title="Siguiente (Flecha Derecha o Espacio)"><i class="fa-solid fa-chevron-right"></i></button>
+</div>
+
+<!-- Presentation Logic -->
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide-container');
+    const counter = document.getElementById('slide-counter');
+
+    function showSlide(index) {
+        if (index >= slides.length) currentSlide = 0;
+        if (index < 0) currentSlide = slides.length - 1;
+
+        slides.forEach((slide) => {
+            slide.classList.remove('active');
+        });
+        slides[currentSlide].classList.add('active');
+        counter.textContent = `${currentSlide + 1} / ${slides.length}`;
+    }
+
+    function nextSlide() { currentSlide++; showSlide(currentSlide); }
+    function prevSlide() { currentSlide--; showSlide(currentSlide); }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+        if (e.key === 'ArrowLeft') prevSlide();
+    });
+
+    // Resize logic to scale presentation dynamically
+    function resizePresentation() {
+        const area = document.getElementById('presentation-area');
+        const scale = Math.min(window.innerWidth / 1280, window.innerHeight / 720) * 0.95; 
+        area.style.transform = `scale(${scale})`;
+    }
+
+    window.addEventListener('resize', resizePresentation);
+    
+    // Init
+    resizePresentation();
+    showSlide(currentSlide);
+</script>
+</body>
+</html>

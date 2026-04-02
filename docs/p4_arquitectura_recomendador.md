@@ -33,8 +33,6 @@ Sobre el pool de candidatos se aplica un algoritmo de recomendación según la r
 | Cliente con 1 o muy pocas compras | **Content-Based Filtering** | Usa features del producto (categoría, precio, características) para encontrar similares sin necesitar historial denso |
 | Cliente nuevo / anónimo (cold start) | Top productos globales o por categoría | Sin perfil ni historial, se sirven los más populares |
 
-> **Nota sobre el dataset:** Olist presenta alta esparsidad (la mayoría de clientes compró una única vez). Por eso se descartaron algoritmos como User-based CF o Matrix Factorization clásica (SVD/ALS), que requieren historiales más ricos para dar resultados confiables.
-
 ---
 
 ## Señales de entrada al sistema
@@ -49,7 +47,7 @@ Sobre el pool de candidatos se aplica un algoritmo de recomendación según la r
 - Tiempo de permanencia en una página de producto
 - Productos añadidos al carrito sin comprar
 
-Estas señales se usan como **interacciones de menor peso** que una compra real en el modelo de ranking. Con un dataset de alta esparsidad como Olist, el comportamiento implícito es especialmente valioso porque multiplica el volumen de señal disponible por usuario.
+Estas señales se usan como **interacciones de menor peso** que una compra real en el modelo de ranking. Con un dataset de alta esparsidad, el comportamiento implícito es especialmente valioso porque multiplica el volumen de señal disponible por usuario.
 
 ---
 
@@ -128,4 +126,4 @@ Sin el feedback loop, el sistema es estático y no aprende del comportamiento re
 1. El sistema de autenticación web provee el `customer_id` en la sesión (o cookie persistente).
 2. Los datos de comportamiento implícito (vistas, clicks) provienen de un sistema de tracking frontend ya existente o implementado en paralelo.
 3. El pipeline offline corre con la frecuencia adecuada al volumen de nuevas transacciones del negocio.
-4. Para la demo/prueba técnica, el modelo se evalúa sobre el dataset histórico de Olist; en producción se alimentaría de datos en streaming.
+4. Para la demo/prueba técnica, el modelo se evalúa sobre el dataset histórico; en producción se alimentaría de datos en streaming.

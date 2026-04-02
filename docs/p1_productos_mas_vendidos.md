@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Identificar las 5 categorías de productos más vendidas en términos de **volumen de unidades** y las 5 con mayor **ingreso total**, a partir del dataset de e-commerce Olist.
+Identificar las 5 categorías de productos más vendidas en términos de **volumen de unidades** y las 5 con mayor **ingreso total**, a partir del dataset.
 
 ---
 

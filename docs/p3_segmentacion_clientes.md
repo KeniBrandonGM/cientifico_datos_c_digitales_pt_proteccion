@@ -8,7 +8,7 @@
 ## Metodología
 
 ### Framework base: RFM
-Para construir el espacio de segmentación se utilizó el framework estándar de la industria **RFM**, calculado a nivel de `customer_unique_id` (identificador real del cliente físico, no `customer_id` que se reasigna por orden en Olist):
+Para construir el espacio de segmentación se utilizó el framework estándar de la industria **RFM**, calculado a nivel de `customer_unique_id`
 
 | Variable | Definición | Cálculo |
 |---|---|---|
@@ -108,7 +108,7 @@ Esporadico Comun         238              1.0        R$   109   ★
 
 ## Limitación del dataset y escalabilidad
 
-El dataset de Olist cubre un periodo de ~2 años (sept. 2016 – ago. 2018). La **alta concentración en frequency=1 no es un problema de datos insuficientes**, sino una característica estructural del marketplace: categorías de compra ocasional (muebles, electrónica, regalos) donde la recompra natural es baja.
+El dataset cubre un periodo de ~2 años (sept. 2016 – ago. 2018). La **alta concentración en frequency=1 no es un problema de datos insuficientes**, sino una característica estructural del marketplace: categorías de compra ocasional (muebles, electrónica, regalos) donde la recompra natural es baja.
 
 Sin embargo, el modelo **gana poder predictivo con el tiempo**: a medida que el negocio madure y acumule más historia por cliente, la variable Frequency generará mayor varianza y permitirá que K-Means la use directamente como discriminador, haciendo la segmentación más granular (potencialmente 5-6 segmentos con perfiles más definidos).
 
@@ -116,7 +116,7 @@ Sin embargo, el modelo **gana poder predictivo con el tiempo**: a medida que el 
 
 ## Supuestos asumidos
 
-1. Se usa `customer_unique_id` en lugar de `customer_id` para identificar al cliente físico real (Olist asigna un nuevo `customer_id` por cada orden).
+1. Se usa `customer_unique_id` en lugar de `customer_id` para identificar al cliente físico real
 2. Solo se consideran órdenes con `order_status == 'delivered'`.
 3. El umbral de fidelidad se define como `frequency >= 2` — al menos una recompra. Con más historia de datos este umbral podría elevarse.
 4. La fecha de referencia para Recency es el día siguiente al máximo del dataset (2018-08-30), simulando el "hoy" del análisis.
